@@ -1,15 +1,24 @@
 const express = require('express');
-const device = require('./lib/device.js'); // Importar express-device manualmente
+const device = require('express-device');
+const DeviceDetector = require('device-detector-js');
 
 const app = express();
-const port = process.env.PORT || 3000; // Render asigna el puerto dinámicamente
+const port = process.env.PORT || 3000;
+const deviceDetector = new DeviceDetector();
 
-app.use(device.capture()); // Middleware para detectar el dispositivo
+app.use(device.capture());
 
 app.get('/', (req, res) => {
+    const userAgent = req.headers['user-agent'];
+    const deviceInfo = deviceDetector.parse(userAgent);
+
     res.json({
-        device: req.device.type, // Tipo de dispositivo: phone, tablet, desktop
-        userAgent: req.headers['user-agent']
+        deviceType: req.device.type || "Desconocido",
+        brand: deviceInfo.device.brand || "Desconocido",
+        model: deviceInfo.device.model || "Desconocido",
+        os: deviceInfo.os.name || "Desconocido",
+        browser: deviceInfo.client.name || "Desconocido",
+        userAgent: userAgent
     });
 });
 
