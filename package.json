@@ -23,7 +23,7 @@
     "supertest": "*"
   },
   "scripts": {
-    "test": "mocha"
+    "start": "node server.js"
   },
   "license": "MIT",
   "repository": {
