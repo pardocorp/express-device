@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');  // 👈 Importar CORS
 const device = require('express-device');
 const DeviceDetector = require('device-detector-js');
 const useragent = require('express-useragent'); // Nueva librería para mejorar detección

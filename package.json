@@ -27,6 +27,7 @@
     "node": ">=0.10"
   },
   "dependencies": {
+    "cors": "^2.8.5",
     "device": ">=0.3.1",
     "device-detector-js": "^3.0.3",
     "express-device": "^0.4.2",
