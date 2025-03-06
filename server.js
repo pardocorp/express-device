@@ -1,12 +1,14 @@
 const express = require('express');
-const device = require('./lib/device.js'); // Importar express-device directamente desde el código del repositorio
+const device = require('express-device');
 const DeviceDetector = require('device-detector-js');
+const useragent = require('express-useragent'); // Nueva librería para mejorar detección
 
 const app = express();
 const port = process.env.PORT || 3000;
 const deviceDetector = new DeviceDetector();
 
 app.use(device.capture());
+app.use(useragent.express()); // Middleware para mejorar detección
 
 app.get('/', (req, res) => {
     const userAgent = req.headers['user-agent'];
@@ -14,14 +16,14 @@ app.get('/', (req, res) => {
 
     res.json({
         deviceType: req.device.type || "Desconocido",
-        brand: deviceInfo.device.brand || "Desconocido",
-        model: deviceInfo.device.model || "Desconocido",
-        os: deviceInfo.os.name || "Desconocido",
-        browser: deviceInfo.client.name || "Desconocido",
+        brand: deviceInfo.device ? deviceInfo.device.brand || req.useragent.platform : "Desconocido",
+        model: deviceInfo.device ? deviceInfo.device.model || "Desconocido" : "Desconocido",
+        os: deviceInfo.os ? deviceInfo.os.name || req.useragent.os : "Desconocido",
+        browser: deviceInfo.client ? deviceInfo.client.name || req.useragent.browser : "Desconocido",
         userAgent: userAgent
     });
 });
 
 app.listen(port, () => {
-    console.log(`Servidor corriendo en http://localhost:${port}`);
+    console.log(`✅ Servidor corriendo en http://localhost:${port}`);
 });
