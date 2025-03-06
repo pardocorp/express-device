@@ -29,6 +29,7 @@
   "dependencies": {
     "device": ">=0.3.1",
     "device-detector-js": "^3.0.3",
+    "express-device": "^0.4.2",
     "express-partials": "0.3.0",
     "express-useragent": "^1.0.15"
   },
