@@ -1,15 +1,20 @@
 const express = require('express');
-const cors = require('cors');  // 👈 Importar CORS
+const cors = require('cors');  // 👈 Importamos CORS
 const device = require('express-device');
 const DeviceDetector = require('device-detector-js');
-const useragent = require('express-useragent'); // Nueva librería para mejorar detección
 
 const app = express();
 const port = process.env.PORT || 3000;
 const deviceDetector = new DeviceDetector();
 
+// 🔥 Habilitar CORS correctamente 🔥
+app.use(cors({
+    origin: '*',  // 👈 Permitir TODAS las solicitudes (puedes cambiarlo a tu dominio)
+    methods: ['GET', 'POST'],
+    allowedHeaders: ['Content-Type']
+}));
+
 app.use(device.capture());
-app.use(useragent.express()); // Middleware para mejorar detección
 
 app.get('/', (req, res) => {
     const userAgent = req.headers['user-agent'];
@@ -17,10 +22,10 @@ app.get('/', (req, res) => {
 
     res.json({
         deviceType: req.device.type || "Desconocido",
-        brand: deviceInfo.device ? deviceInfo.device.brand || req.useragent.platform : "Desconocido",
+        brand: deviceInfo.device ? deviceInfo.device.brand || "Desconocido" : "Desconocido",
         model: deviceInfo.device ? deviceInfo.device.model || "Desconocido" : "Desconocido",
-        os: deviceInfo.os ? deviceInfo.os.name || req.useragent.os : "Desconocido",
-        browser: deviceInfo.client ? deviceInfo.client.name || req.useragent.browser : "Desconocido",
+        os: deviceInfo.os ? deviceInfo.os.name || "Desconocido" : "Desconocido",
+        browser: deviceInfo.client ? deviceInfo.client.name || "Desconocido" : "Desconocido",
         userAgent: userAgent
     });
 });
