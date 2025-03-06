@@ -1,5 +1,5 @@
 const express = require('express');
-const device = require('express-device');
+const device = require('./lib/device.js'); // Importar express-device directamente desde el código del repositorio
 const DeviceDetector = require('device-detector-js');
 
 const app = express();
